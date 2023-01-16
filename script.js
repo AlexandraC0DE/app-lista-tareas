@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function agregarTarea() {
         let tarea = document.getElementById("nuevaTarea").value;
+        if (tarea === "") {
+            return;
+        }
         tareas.push(tarea);
         localStorage.setItem("tareas", JSON.stringify(tareas));
 
@@ -48,7 +51,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("nuevaTarea").value = "";
         console.log("Tarea agregada: " + tarea);
     }
-    
+
+
     document.getElementById("agregarBtn").addEventListener("click", agregarTarea);
 
     document.getElementById("nuevaTarea").addEventListener("keydown", function (event) {
@@ -97,8 +101,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 });
-
-
-
-
-

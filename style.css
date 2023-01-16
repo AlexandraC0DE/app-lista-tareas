@@ -12,6 +12,7 @@
     --green: #2c7b90;
 
 }
+
 /* Se agregó el background para que se aplique a todo el 
 contenido de la página.  */
 body {
@@ -23,9 +24,8 @@ body {
 .app {
     position: absolute;
     top: 50%;
-    left: 60%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%;
+    width: 80%;
     max-width: 600px;  /*Se agregó un máximo ancho para la app. */
 }
-
