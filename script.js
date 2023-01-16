@@ -1,103 +1,103 @@
-document.addEventListener('DOMContentLoaded', function () {
-    let tareas = JSON.parse(localStorage.getItem("tareas")) || [];
-
-    // Cargar tareas guardadas en el almacenamiento local al cargar la página
-    tareas.forEach(function (tarea) {
+    document.addEventListener('DOMContentLoaded', function () {
         let listaTareas = document.getElementById("listaTareas");
-        let li = document.createElement("li");
-        li.appendChild(document.createTextNode(tarea));
+        let nuevaTareaInput = document.getElementById("nuevaTarea");
+        let agregarBtn = document.getElementById("agregarBtn");
+        let tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+        let editando = false;
+
+        // Cargar tareas guardadas en el almacenamiento local al cargar la página
+        tareas.forEach(function (tarea) {
+            let li = crearListItem(tarea);
+            listaTareas.appendChild(li);
+        });
+
+        // Agregar tarea al presionar el botón o la tecla Enter
+        agregarBtn.addEventListener("click", agregarTarea);
+        nuevaTareaInput.addEventListener("keydown", function (event) {
+            if (event.keyCode === 13) {
+                agregarTarea();
+            }
+        });
+
+        // Crea un elemento li con la tarea y los botones de eliminar y editar
+        function crearListItem(tarea) {
+            let li = document.createElement("li");
+            li.textContent = tarea;
 
         // Agregar botón de eliminar tarea
-        let btnEliminar = document.createElement("button");
-        btnEliminar.innerHTML = "Eliminar";
-        btnEliminar.onclick = () => eliminarTarea(li);
-        li.appendChild(btnEliminar);
+let btnEliminar = document.createElement("button");
+btnEliminar.innerHTML = "Eliminar";
+btnEliminar.addEventListener("click", function(){
+eliminarTarea(li, tarea);
+});
+li.appendChild(btnEliminar);
 
         // Agregar boton de editar tarea 
         let btnEditar = document.createElement("button");
         btnEditar.innerHTML = "Editar";
-        btnEditar.onclick = () => editarTarea(li);
+        btnEditar.addEventListener("click", function(){
+            editarTarea(li, tarea);
+        });
         li.appendChild(btnEditar);
 
-        listaTareas.appendChild(li);
-    });
+        return li;
+    }
 
     function agregarTarea() {
-        let tarea = document.getElementById("nuevaTarea").value;
-        if (tarea === "") {
+        let tarea = nuevaTareaInput.value;
+        if (tarea === "" || editando) {
             return;
         }
+        // Agrega la tarea a la lista y al almacenamiento local
         tareas.push(tarea);
         localStorage.setItem("tareas", JSON.stringify(tareas));
 
-        // Crear elemento li y agregarlo a la lista de tareas en el HTML
-        let listaTareas = document.getElementById("listaTareas");
-        let li = document.createElement("li");
-        li.appendChild(document.createTextNode(tarea));
-
-        // Agregar botón de eliminar tarea
-        let btnEliminar = document.createElement("button");
-        btnEliminar.innerHTML = "Eliminar";
-        btnEliminar.onclick = () => eliminarTarea(li);
-        li.appendChild(btnEliminar);
-
-        // Agregar boton de editar tarea 
-        let btnEditar = document.createElement("button");
-        btnEditar.innerHTML = "Editar";
-        btnEditar.onclick = () => editarTarea(li);
-        li.appendChild(btnEditar);
-
+        // Crea el elemento li y lo agrega a la lista de tareas en el HTML
+        let li = crearListItem(tarea);
         listaTareas.appendChild(li);
-        document.getElementById("nuevaTarea").value = "";
+        nuevaTareaInput.value = "";
         console.log("Tarea agregada: " + tarea);
     }
 
-
-    document.getElementById("agregarBtn").addEventListener("click", agregarTarea);
-
-    document.getElementById("nuevaTarea").addEventListener("keydown", function (event) {
-        if (event.keyCode === 13) {
-            agregarTarea();
-        }
-    });
-
-    function eliminarTarea(li) {
-        let tareaEliminada = tareas[tareas.indexOf(li.firstChild.nodeValue)];
-        tareas.splice(tareas.indexOf(li.firstChild.nodeValue), 1);
+    function eliminarTarea(li, tarea) {
+        tareas.splice(tareas.indexOf(tarea), 1);
         localStorage.setItem("tareas", JSON.stringify(tareas));
-        let listaTareas = document.getElementById("listaTareas");
         listaTareas.removeChild(li);
-        console.log("Tarea eliminada: " + tareaEliminada);
+        console.log("Tarea eliminada: " + tarea);
     }
 
-    function editarTarea(li) {
+    function editarTarea(li, tarea) {
+        if(editando) return;
+        editando = true;
         let valorActual = li.firstChild.nodeValue;
         let input = document.createElement("input");
         input.type = "text";
         input.value = valorActual;
         li.replaceChild(input, li.firstChild);
-
-        input.addEventListener("keydown", function (event) {
-            if (event.keyCode === 13) {
-                let nuevoValor = input.value;
-                tareas[tareas.indexOf(valorActual)] = nuevoValor;
-                localStorage.setItem("tareas", JSON.stringify(tareas));
-                li.replaceChild(document.createTextNode(nuevoValor), input);
-                li.removeChild(btnGuardar);
-            }
-        });
-
+        //crear botón guardar
         let btnGuardar = document.createElement("button");
         btnGuardar.innerHTML = "Guardar";
-        btnGuardar.onclick = function () {
-            let nuevoValor = input.value;
-            tareas[tareas.indexOf(valorActual)] = nuevoValor;
-            localStorage.setItem("tareas", JSON.stringify(tareas));
-            li.replaceChild(document.createTextNode(nuevoValor), input);
-            li.removeChild(btnGuardar);
-        };
-
+        btnGuardar.addEventListener("click", function(){
+            guardarTarea(li, input, tarea);
+        });
         li.appendChild(btnGuardar);
+
+        //agrega evento keydown para guardar al presionar enter
+        input.addEventListener("keydown", function (event) {
+            if (event.keyCode === 13) {
+                guardarTarea(li, input, tarea);
+            }
+        });
     }
 
-});
+    function guardarTarea(li, input, tarea) {
+        let nuevaTarea = input.value;
+        tareas[tareas.indexOf(tarea)] = nuevaTarea;
+        localStorage.setItem("tareas", JSON.stringify(tareas));
+        li.replaceChild(document.createTextNode(nuevaTarea), input);
+        let btnGuardar = li.querySelector("button");
+        li.removeChild(btnGuardar);
+        editando = false;
+        console.log("Tarea guardada: " + nuevaTarea);
+        }
+        });
