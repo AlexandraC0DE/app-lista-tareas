@@ -6,19 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Tareas</title>
-    <script src="/script.js"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Lista de Tareas</h1>
-    <input type="text" id="nuevaTarea">
-    <button onclick="agregarTarea(document.getElementById('nuevaTarea').value)">Agregar Tarea</button>
-    <ul id="listaTareas"></ul>
-
-    <!-- <h1>Lista de Tareas</h1>
-    <input type="text" id="nuevaTarea">
-    <button onclick="agregarTarea()">Agregar Tarea</button>
-    <ul id="listaTareas"></ul> -->
+    <div class="app">
+        <h1>Lista de Tareas</h1>
+        <input type="text" id="nuevaTarea">
+        <button id="agregarBtn">Agregar Tarea</button>
+        <h3>Tareas pendientes para hoy:</h3>
+        <ul id="listaTareas"></ul>
+    </div>
+    <script src="script.js"></script>
 </body>
 
 </html>
