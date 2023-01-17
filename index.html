@@ -5,19 +5,48 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
     <title>Lista de Tareas</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
-    <div class="app">
+    <div id="todo-app">
         <h1>Lista de Tareas</h1>
-        <input type="text" id="nuevaTarea">
-        <button id="agregarBtn">Agregar Tarea</button>
-        <h3>Tareas pendientes para hoy:</h3>
+        <input type="text" id="nuevaTarea" placeholder="Agregar nueva tarea...">
+        <button id="agregarBtn">Agregar</button>
         <ul id="listaTareas"></ul>
+        <div id="nuevaTareaContainer">
+            
+        </div>
+        <div id="editarTareaContainer" style="display:none;">
+            <form id="formulario-editar-tarea">
+                <input type="text" id="editarInput" placeholder="Editar tarea...">
+                <button id="guardarBtn">Guardar</button>
+            </form>
+        </div>
+        <div id="filtros-container">
+            <div>
+                <button id="allBtn">All</button>
+                <button id="activeBtn">Active</button>
+                <button id="completedBtn">Completed</button>
+            </div>
+            <div>
+                <button id="clearCompletedBtn">Clear Completed</button>
+            </div>
+            <div>
+                <p>Drag and drop to reorder list</p>
+            </div>
+        </div>
+        <footer class="attribution">
+            Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend
+                Mentor</a>.
+            Coded by <a href="#">Your Name Here</a>.
+        </footer>
+        <script src="script.js"></script>
     </div>
-    <script src="script.js"></script>
 </body>
+
+
 
 </html>

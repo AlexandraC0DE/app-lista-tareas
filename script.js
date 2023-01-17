@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const listaTareas = document.getElementById("listaTareas");
     const nuevaTareaInput = document.getElementById("nuevaTarea");
     const agregarBtn = document.getElementById("agregarBtn");
+    const formEditar = document.getElementById("formulario-editar-tarea");
     let tareas = JSON.parse(localStorage.getItem("tareas")) || [];
     let editando = false;
     let tareaActual = "";
@@ -82,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function () {
         guardarTareas();
     }
 
-    document.getElementById("formulario-editar-tarea").addEventListener("submit", guardarTareaEditada);
 
     function editarTarea(li, tarea) {
         if (editando) {
@@ -104,6 +104,8 @@ document.addEventListener('DOMContentLoaded', function () {
             nuevaTareaInput.value = "";
             nuevaT
         }
+
+        formEditar.addEventListener("submit", guardarTareaEditada);
 
         //Agrega un input de texto con el valor de la tarea Actual en el elemento li y oculta el contenido de texto
         let inputEditar = document.createElement("input");
@@ -136,6 +138,7 @@ document.addEventListener('DOMContentLoaded', function () {
             alert("Ya existe una tarea con ese nombre, ingrese uno diferente.");
             return;
         }
+
         tareas[tareas.indexOf(tarea)] = nuevaTarea;
         guardarTareas();
         li.textContent = nuevaTarea;
@@ -172,4 +175,4 @@ document.addEventListener('DOMContentLoaded', function () {
     function guardarTareas() {
         localStorage.setItem("tareas", JSON.stringify(tareas));
     }
-});    
+});  
